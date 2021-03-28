@@ -15,7 +15,7 @@ def __main__():
 
     # Create the window
     window = sg.Window('Calm Bot', layout, default_element_size=(50, 3),finalize=True)
-    cb = ChatBot() 
+    cb = ChatBot()
     sc = SpellCheck()
     window['-ML1-' + sg.WRITE_ONLY_KEY].print("Calm Bot: Hello, my name is Calm Bot and I'm here to help you!")
     cb.extractQuotes('posQuotes.txt') #we establish the posQuotes in the object
@@ -53,5 +53,5 @@ def __main__():
         sys.exit()
     window.close()
     sys.exit()
-    
+
 __main__()
