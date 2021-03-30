@@ -1,5 +1,6 @@
 from chatbot.chatbot import ChatBot
 from chatbot.spellcheck import SpellCheck
+from chatbot.translate import translate
 import PySimpleGUI as sg
 import sys
 import subprocess
@@ -16,8 +17,10 @@ def __main__():
     # Create the window
     window = sg.Window('Calm Bot', layout, default_element_size=(50, 3),finalize=True)
     cb = ChatBot()
+    ta = translate()
     sc = SpellCheck()
     window['-ML1-' + sg.WRITE_ONLY_KEY].print("Calm Bot: Hello, my name is Calm Bot and I'm here to help you!")
+    window['-ML1-' + sg.WRITE_ONLY_KEY].print("Calm Bot: What language do your prefer we speak in? To change this language at any time please type: Change language")
     cb.extractQuotes('posQuotes.txt') #we establish the posQuotes in the object
     cb.extractQuotes('negQuotes.txt') #we establish the negQuotes in the object
     exitWords = ['bye', 'quit', 'exit', 'see ya', 'good bye'] #Exit the chat bot with common salutations
@@ -27,21 +30,31 @@ def __main__():
         while(True):    #run a loop to keep prompting the user for input
             event, values = window.read()
             print("You: "+ values['i'])
-            userInput = (values['i'])
+            languageInput = (values['i']) #userInput in any language
+            userInput = ta.transToEn(languageInput) #converting to english to use in chatbot properly
+
             window.FindElement('i').Update('')
-            window['-ML1-' + sg.WRITE_ONLY_KEY].print("You: "+userInput, end='\n')
+            window['-ML1-' + sg.WRITE_ONLY_KEY].print("You: "+languageInput, end='\n')
             if event == sg.WIN_CLOSED or event == 'EXIT':
                 break
             if sc.errorHandlingArray(userInput.lower()) in exitError: #allows for words like "exiting" or "exited" to work, as well as many other cases
-                window['-ML1-' + sg.WRITE_ONLY_KEY].print("Calm Bot: It was really nice talking to you!", end='\n')
-                print("Calm Bot: It was really nice talking to you!")
+                window['-ML1-' + sg.WRITE_ONLY_KEY].print("Calm Bot: " + ta.googleTrans("It was really nice talking to you!"), end='\n')
+                print("Calm Bot: " + ta.googleTrans("It was really nice talking to you!"))
                 break
+            elif sc.errorHandlingArray(userInput.lower()) == sc.errorHandlingArray("change language"): #changes language if user asks
+                event, values = window.read()
+                print(ta.googleTrans("You: ") + values['i'])
+                languageInput = (values['i']) #userInput in any language
+                userInput = ta.transToEn(languageInput) #converting to english to use in chatbot properly
+                window.FindElement('i').Update('')
+                window['-ML1-' + sg.WRITE_ONLY_KEY].print("You: "+ ta.googleTrans(userInput), end='\n')
+                window['-ML1-' + sg.WRITE_ONLY_KEY].print("Calm bot: " + ta.googleTrans(ta.setLanguage(userInput.lower())))
             else:
                 if cb.helloMessage(userInput) != None:  #if hello returns nothing, output a quote
-                    out=("Calm Bot: " + cb.helloMessage(userInput))
+                    out=("Calm Bot: " + ta.googleTrans(cb.helloMessage(userInput)))
                     window['-ML1-' + sg.WRITE_ONLY_KEY].print(out, end='\n')
                 else:
-                    out = ("Calm Bot: " + cb.botResponse(userInput))
+                    out = ("Calm Bot: " + ta.googleTrans(cb.botResponse(userInput)))
                     print(out)
                     window['-ML1-' + sg.WRITE_ONLY_KEY].print(out, end='\n')
                     # See if user wants to quit or window was closed
