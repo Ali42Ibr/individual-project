@@ -13,7 +13,6 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from chatbot import sentiment
 from nltk.corpus import wordnet
-#nltk.download(quiet = True)
 
 
 #This the class of the chatbot which reads both positive and negative quotes from a file and places them into
@@ -88,7 +87,7 @@ class ChatBot():
         reasonableResponse = ["I'm sorry, I didn't quite understand what you just typed.","Sorry I'm not capable talking about that right now.",
                                       "Your choice of discussion is out of my range.", "I didn't get that could you try again?",
                                       "Unfortunealy I don't recognize what your trying to tell me."]
-                                      
+
         potentialAdjectives = ['happy','sad','lazy','tired','angry','lonely','bad','lost', 'hurt']
 
         for i in range(len(potentialAdjectives)):
@@ -171,4 +170,3 @@ class ChatBot():
                         return response + self.negQuotes[indexOfQuote[0]]
                     self.negQuotes.remove(z)
                 return response + ' ' + random.choice(reasonableResponse)
-

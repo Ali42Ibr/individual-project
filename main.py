@@ -1,8 +1,8 @@
+import subprocess
 from chatbot.chatbot import ChatBot
 from chatbot.spellcheck import SpellCheck
 import PySimpleGUI as sg
 import sys
-import subprocess
 
 # Define the window's contents
 sg.theme('Dark2')
