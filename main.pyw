@@ -49,6 +49,8 @@ def __main__():
                 window.FindElement('i').Update('')
                 window['-ML1-' + sg.WRITE_ONLY_KEY].print("You: "+ ta.googleTrans(userInput), end='\n')
                 window['-ML1-' + sg.WRITE_ONLY_KEY].print("Calm bot: " + ta.googleTrans(ta.setLanguage(userInput.lower())))
+            elif "What is" in sc.errorHandlingArray(userInput.lower()): #ideintifies the asking of a definition (i.e from wikipedia) when "What is" is present
+
             else:
                 if cb.helloMessage(userInput) != None:  #if hello returns nothing, output a quote
                     out=("Calm Bot: " + ta.googleTrans(cb.helloMessage(userInput)))
