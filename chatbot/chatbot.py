@@ -91,6 +91,28 @@ class ChatBot():
 
         potentialAdjectives = ['happy','sad','lazy','tired','angry','lonely','bad','lost', 'hurt']
 
+        wikipediaQuestion = ["what is", "how did", "how is", "what are"]
+
+        arrayInput = nltk.word_tokenize(userInput.lower())
+        str = " "
+
+        if
+            print(str.join(arrayInput[0:2]))
+
+            question = " "
+
+            if str.join(arrayInput[0:2]) in wikipediaQuestion:
+
+                rest = arrayInput[2:len(arrayInput)]
+
+                if len(rest) == 1:
+                    question = rest[0]
+                elif len(rest) > 1:
+                    question.join(arrayInput[2:len(arrayInput)])
+
+                wikisummary = w.getDefinition(question)
+
+
         for i in range(len(potentialAdjectives)):
 
             synList = []
