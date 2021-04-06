@@ -9,6 +9,7 @@ import string
 import nltk
 from chatbot.spellcheck import SpellCheck
 from chatbot.pos import POS
+from chatbot.wikipedia import WikiPedia
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from chatbot import sentiment
@@ -28,6 +29,7 @@ class ChatBot():
 
     out = nltk.text.ContextIndex([word.lower( ) for word in nltk.corpus.brown.words( )])
 
+    w = WikiPedia()
     sc = SpellCheck()
     CV = CountVectorizer()
     posQuotes = []
@@ -93,12 +95,13 @@ class ChatBot():
 
         wikipediaQuestion = ["what is", "how did", "how is", "what are"]
 
-        arrayInput = nltk.word_tokenize(userInput.lower())
+        arrayInput = nltk.word_tokenize(userInput)
         str = " "
 
-        if
-            print(str.join(arrayInput[0:2]))
+        print(len(arrayInput))
 
+        if len(arrayInput) > 1 :
+            response = ' '
             question = " "
 
             if str.join(arrayInput[0:2]) in wikipediaQuestion:
@@ -110,8 +113,8 @@ class ChatBot():
                 elif len(rest) > 1:
                     question.join(arrayInput[2:len(arrayInput)])
 
-                wikisummary = w.getDefinition(question)
-
+                wikisummary = self.w.getDefinition(question)
+                return response + wikisummary
 
         for i in range(len(potentialAdjectives)):
 
