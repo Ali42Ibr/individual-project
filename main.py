@@ -41,6 +41,7 @@ def __main__():
                 window['-ML1-' + sg.WRITE_ONLY_KEY].print("Calm Bot: " + ta.googleTrans("It was really nice talking to you!"), end='\n')
                 break
             elif sc.errorHandlingArray(userInput.lower()) == sc.errorHandlingArray("change language"): #changes language if user asks
+            
                 event, values = window.read()
                 print(ta.googleTrans("You: ") + values['i'])
                 languageInput = (values['i']) #userInput in any language

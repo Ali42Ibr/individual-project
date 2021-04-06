@@ -7,14 +7,15 @@ This Project aims to impersonate a psychiatrist in the form of an online chat-bo
 
 Our Team truly believes that anonymous online conversation with an intelligent chat-bot can aleviate mental stresses without the added expenses a real psychiatrist would require.
 
-This conversational bot was developed entirely in Python using the Natural Language Processing library, Natural Language Toolkit(NLTK).
+This conversational bot was developed entirely in Python using the Natural Language Processing library, Natural Language Toolkit(NLTK), as well as APIs from Google and Wikipedia.
 
-The program is made up of two classes: chatbot and main
+The program is made up of two main classes: chatbot and main
 >chatbot is the class that can has all the attributes of the chat bot and its methods
 
 >main class is where a chatbot object gets created and is run to extract quotes from file as  
 >well as running a loop to continuously ask the user for input with a loop in the class until  
 >they enter an exit word  
+>all other classes are used to support the outputing and inputing functions of chatbot
 
 ## Installation
 
@@ -23,7 +24,11 @@ Open up command prompt and type the following:
 
 `pip install nltk`  
 
-`pip install -U scikit-learn` 
+`pip install -U scikit-learn`
+
+`pip install googletrans`
+
+`pip install wikipedia`
 
 You should then open up a Python interactive console (IDLE) and download all nltk packages by:
 
@@ -56,7 +61,7 @@ Calm Bot: Depression can sometimes be overwhelming, just know that you are not a
 It recognized the depressioning is the same as depression and responded correctly.
 
 Sentiment: Using the sentiment analysis tutorial for Python from https://do.co/3tPTa2w I analysed the quotes we had
-from A2 and categorized them using the sentiment model based on negative or positive sentiments and put them in according 
+from A2 and categorized them using the sentiment model based on negative or positive sentiments and put them in according
 text files. After that it was implemented in the ChatBot's botResponse function to classify the sentiment of the user's input
 and based on whether it was positive or negative, it would output the most similar quote to the user's input from the available
 responses.
@@ -66,14 +71,44 @@ You: i am unhappy
 *internally calm bot recognizes this as a negative sentiment statement*  
 Calm Bot: I am here to help you get better.
 
-Synonom Recognition: This was implememtned as the following. I created a list of adjectives that is common when talking to a psychiatrist, then used wordnet to create a 
-list of synonoms for each potential adjective used. The bot will check the user input to see if it contains any of the potenital adjectives or any of their synonoms. Laslty
-if there is a synonom found in the input, whichever potential adjective the synonom is linked to is added behind the scenes to the user input, so this way its similarity
+Synonym Recognition: This was implemented as the following. I created a list of adjectives that is common when talking to a psychiatrist, then used wordnet to create a
+list of synonyms for each potential adjective used. The bot will check the user input to see if it contains any of the potenital adjectives or any of their synonyms. Lastly if there is a synonym found in the input, whichever potential adjective the synonom is linked to is added behind the scenes to the user input, so this way its similarity
 score is increased when being compared to the quotes files.
 
 Example:  
-You: im feeling banal  
+You: I'm feeling banal  
 Calm bot: if you are feeling tired, drink lots of water and have a hearty meal.  
 You : im feeling unenergized  
 Calm bot: if you are feeling lazy, go workout.  
 ***NOTE: the words banal and unenergized are nowhere to be found in quotes files, but the bot recognizes the synonom and shoots a relavent response***
+
+WikiPedia API: This is a very useful API that has an extensive amount of knowledge for many topics. But since wikipedia uses titles as its general searching method, parsing is necessary so that we can return valid results.
+The API is used here in the following way: Chatbot class recognizes that a question about a topic is being asked, and therefore the user wants a definition in response. Chatbot parses the part of the question that is the object of interest. Wikipedia class takes the object (usually a sentence) of importance and tries multiple variations of the sentence in order to get a reasonable response from the wikipedia website.
+
+Example:
+You: what is anxiety
+Calm Bot: Anxiety is an emotion characterized by an unpleasant state of inner turmoil, often accompanied by nervous behavior such as pacing back and forth, somatic complaints, and rumination.
+You: what is lonely
+Calm Bot: Loneliness is an unpleasant emotional response to perceived isolation.
+
+Google translate API: This API takes advantage of the massive google translate service by allowing the user to message the bot in 5 different language as well as receive responses in that language. The user can type "change language" at any point in the conversation, he/she is then asked what language they want to change to from 5 languages. When a language is chosen, translate stores that language in variable, now any conversation that occurs will be translated as well as input being understood but only in this one language. The words "change language" even if the main language is not English, this is for ease of conversation.
+
+Example:
+
+Calm Bot: What language do your prefer we speak in? To change this language at any time please type: Change language
+You: change language
+Calm Bot: What language do you want? Choose from English, Dutch, Spanish, Arabic, and Korean
+You: Arabic
+Calm bot: تغيرت اللغة: العربية (Language changed to arabic)
+You: Hello
+Calm Bot: أهلا بك! (hello!)
+You: مرحبا (hello)
+Calm Bot: أهلا بك! (hello)
+You: انا حزين (I am sad)
+Calm Bot: الحل: إذا كنت تشعر بالحزن ، افعل شيئًا يجعلك سعيدًا. (Solution: if you are sad do something that makes you happy!)
+You: change language
+Calm Bot: ما هي اللغة التي تريدها؟ اختر من بين الإنجليزية والهولندية والإسبانية والعربية والكورية (Language question same as above but in arabic)
+You: الإنجليزية (english)
+Calm bot: Language changed: English (changes language succesfully)
+You: hello
+Calm Bot: Nice to meet you!

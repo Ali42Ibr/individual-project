@@ -42,6 +42,7 @@ def __main__():
                 print("Calm Bot: " + ta.googleTrans("It was really nice talking to you!"))
                 break
             elif sc.errorHandlingArray(userInput.lower()) == sc.errorHandlingArray("change language"): #changes language if user asks
+                window['-ML1-' + sg.WRITE_ONLY_KEY].print("Calm Bot: " + ta.googleTrans("What language do you want? Choose from English, Dutch, Spanish, Arabic, and Korean"))
                 event, values = window.read()
                 print(ta.googleTrans("You: ") + values['i'])
                 languageInput = (values['i']) #userInput in any language
@@ -49,7 +50,7 @@ def __main__():
                 window.FindElement('i').Update('')
                 window['-ML1-' + sg.WRITE_ONLY_KEY].print("You: "+ ta.googleTrans(userInput), end='\n')
                 window['-ML1-' + sg.WRITE_ONLY_KEY].print("Calm bot: " + ta.googleTrans(ta.setLanguage(userInput.lower())))
-            
+
 
             else:
                 if cb.helloMessage(userInput) != None:  #if hello returns nothing, output a quote

@@ -98,8 +98,6 @@ class ChatBot():
         arrayInput = nltk.word_tokenize(userInput)
         str = " "
 
-        print(len(arrayInput))
-
         if len(arrayInput) > 1 :
             response = ' '
             question = " "
