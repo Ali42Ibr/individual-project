@@ -12,7 +12,6 @@ from chatbot.pos import POS
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from chatbot import sentiment
-from chatbot.wikipedia import WikiPedia
 from nltk.corpus import wordnet
 #nltk.download(quiet = True)
 
@@ -29,10 +28,8 @@ class ChatBot():
 
     out = nltk.text.ContextIndex([word.lower( ) for word in nltk.corpus.brown.words( )])
 
-    w = WikiPedia()
     sc = SpellCheck()
     CV = CountVectorizer()
-    quotes = []
     posQuotes = []
     negQuotes = [] #lines taken from files will be placed in posQuotes and negQuotes to talk to user
     pos = POS()
@@ -46,17 +43,13 @@ class ChatBot():
         if fileName[0] == 'p':
             file = open(fileName, 'r', encoding='utf-8')
             text = file.read()
+            file.close()
             self.posQuotes = nltk.sent_tokenize(text) #extract quotes to posQuotes or negQuotes
         elif fileName[0] == 'n':
             file = open(fileName, 'r', encoding='utf-8')
             text = file.read()
             file.close()
             self.negQuotes = nltk.sent_tokenize(text)
-        else:
-            file = open(fileName,'r',encoding='utf-8')
-            text = file.read()
-            file.close()
-            self.quotes = nltk.sent_tokenize(text)
 
     def helloMessage(self, userInput):
         userInput = userInput.lower() #make everything lowercase so bot can doesn't deal with cases
@@ -97,42 +90,6 @@ class ChatBot():
                                       "Unfortunealy I don't recognize what your trying to tell me."]
 
         potentialAdjectives = ['happy','sad','lazy','tired','angry','lonely','bad','lost', 'hurt']
-
-        wikipediaQuestion = ["what is", "how did", "how is", "what are"] #wikipedia class will answer questions that are definitions
-
-        arrayInput = nltk.word_tokenize(userInput.lower())
-        str = " "
-        print(str.join(arrayInput[0:2]))
-
-        question = " "
-
-
-        if str.join(arrayInput[0:2]) in wikipediaQuestion:
-
-            rest = arrayInput[2:len(arrayInput)]
-
-            if len(rest) == 1:
-                question = rest[0]
-            elif len(rest) > 1:
-                question.join(arrayInput[2:len(arrayInput)])
-
-            wikisummary = self.w.getDefinition(question)
-
-            if wikisummary != False: #here we are checking if this summary is indeed valid or just a random response we don't need
-                self.quotes.append(wikisummary) #add users' input to end of posQuotes list
-                response = ''      #initialize the bots response
-                countArray = self.CV.fit_transform(self.quotes)             ##these two lines form the similarity scores between
-                similarityScores = cosine_similarity(countArray[-1], countArray)    ##each quote and the users input to output the most similar one
-                similarityScoresList = similarityScores.flatten()   #similarityScores is not a 1 dimensional array, so we flatten it
-                indexOfQuote = self.sortIndexList(similarityScoresList)  #this gives us the indices of the most similar to least similar quotes
-                indexOfQuote = indexOfQuote[1:]     #remove the first element as it is the index of the users' input
-
-                if similarityScoresList[indexOfQuote[0]] != 0.00:       #if there are posQuotes similar to users' input it outputs most similar quote
-                    self.quotes.remove(wikisummary)                       #otherwise, it outputs that it does not understand users' input
-                    return response + wikisummary
-                elif similarityScoresList[indexOfQuote[0]] == 0.00:
-                    self.quotes.remove(wikisummary)
-
 
         for i in range(len(potentialAdjectives)):
 

@@ -23,7 +23,6 @@ def __main__():
     window['-ML1-' + sg.WRITE_ONLY_KEY].print("Calm Bot: What language do your prefer we speak in? To change this language at any time please type: Change language")
     cb.extractQuotes('posQuotes.txt') #we establish the posQuotes in the object
     cb.extractQuotes('negQuotes.txt') #we establish the negQuotes in the object
-    cb.extractQuotes("quotes.txt") #regular quotes for checking
     exitWords = ['bye', 'quit', 'exit', 'see ya', 'good bye'] #Exit the chat bot with common salutations
 
     exitError = sc.errorHandlingArray(exitWords) # correcting for errors
@@ -50,6 +49,8 @@ def __main__():
                 window.FindElement('i').Update('')
                 window['-ML1-' + sg.WRITE_ONLY_KEY].print("You: "+ ta.googleTrans(userInput), end='\n')
                 window['-ML1-' + sg.WRITE_ONLY_KEY].print("Calm bot: " + ta.googleTrans(ta.setLanguage(userInput.lower())))
+            elif "What is" in sc.errorHandlingArray(userInput.lower()): #ideintifies the asking of a definition (i.e from wikipedia) when "What is" is present
+
             else:
                 if cb.helloMessage(userInput) != None:  #if hello returns nothing, output a quote
                     out=("Calm Bot: " + ta.googleTrans(cb.helloMessage(userInput)))
