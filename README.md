@@ -26,7 +26,7 @@ Open up command prompt and type the following:
 
 `pip install -U scikit-learn`
 
-`pip install googletrans`
+`pip install googletrans==4.0.0-rc1`
 
 `pip install wikipedia`
 
